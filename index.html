@@ -11,12 +11,25 @@
             }).join('').replaceAll("0","秦唯雅").replaceAll("1","黄韬").replaceAll("2","喜欢").replaceAll("3","嘿嘿");
         }
         function sbToString(binary) {
-            binary=binary.replace(/[^秦韬]/g, '').replaceAll("秦唯雅","0").replaceAll("黄韬","1").replaceAll("喜欢","2").replaceAll("嘿嘿","3");
-            let binaryArray = binary.match(/.{1,16}/g);
-            return binaryArray.map(bin => {
-                return String.fromCharCode(parseInt(bin, 4));
-            }).join('');
-        }
+        // 保留有效字符（所有“秦唯雅”，“黄韬”，“喜欢”，“嘿嘿”四种）
+        binary = binary.replace(/秦唯雅|黄韬|喜欢|嘿嘿/g, (match) => {
+            // 根据不同的关键字进行替换回四进制数字
+            switch (match) {
+                case '秦唯雅': return '0';
+                case '黄韬': return '1';
+                case '喜欢': return '2';
+                case '嘿嘿': return '3';
+            }
+        });
+    
+        // 将替换后的四进制字符串按每 16 位分割为数组
+        let binaryArray = binary.match(/.{1,16}/g);
+        
+        // 将每个四进制字符串解析为字符
+        return binaryArray.map(base4 => {
+            return String.fromCharCode(parseInt(base4, 4));
+        }).join('');
+    }
         function copy(text) {
             const textarea = document.createElement('textarea');
             textarea.value = text;
