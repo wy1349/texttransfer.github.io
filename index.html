@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>秦韬加密器</title>
+    <link rel="icon" href="https://heymannice.github.io/sbEncryptor/favicon.ico" type ="image/x-icon">
+    <link rel="stylesheet" href="./css/pico.min.css">
+    <script>
+        function stringToSb(str) {
+            return Array.from(str).map(char => {
+                return char.charCodeAt(0).toString(4).padStart(16, '0');
+            }).join('').replaceAll("0","秦唯雅").replaceAll("1","黄韬").replaceAll("2","喜欢").replaceAll("3","嘿嘿");
+        }
+        function sbToString(binary) {
+            binary=binary.replace(/[^秦韬]/g, '').replaceAll("秦唯雅","0").replaceAll("黄韬","1").replaceAll("喜欢","2").replaceAll("嘿嘿","3");
+            let binaryArray = binary.match(/.{1,16}/g);
+            return binaryArray.map(bin => {
+                return String.fromCharCode(parseInt(bin, 4));
+            }).join('');
+        }
+        function copy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, textarea.value.length);
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                alert("复制失败！请手动选择复制");
+            }
+            document.body.removeChild(textarea);
+        }
+
+    </script>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        textarea{
+            width: 100%;
+            height: 200px;
+        }
+        main{
+            text-align: center;
+        }
+        p{
+            text-align: left;
+            text-indent: 2rem;
+        }
+        button{
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <article>
+            <details open>
+                <summary role="button" class="outline">秦韬加密器-介绍</summary>
+                <p>秦韬加密器是一个简单的文本加密和解密工具。它将输入的文本转换为二进制编码，并用“傻”和“比”两个字符替换二进制中的“0”和“1”。实现普通字符串和“傻”、“比”二字组成的字符串的相互转换。程序在本地转换你的字符串，不会上传到服务器。</p>
+                <p>
+                    <span style="font-weight: bold;">
+                        声明：这个工具仅供娱乐，不适用于任何安全需求。
+                    </span>
+                    <a href="https://github.com/heyManNice/sbEncryptor">
+                        <img src="https://flat.badgen.net/badge/github/sbEncryptor?icon=github" alt="github">
+                    </a>
+                </p>
+            </details>
+        </article>
+        <div class="grid">
+            <article>
+                <h1>加密</h1>
+                <textarea id="encryption" placeholder="输入待加密文字"></textarea>
+                <button onclick="encryption_result.value=stringToSb(encryption.value)">加密</button>
+                <button onclick="copy(encryption_result.value);this.focus()">复制</button>
+                <textarea id="encryption_result" placeholder="加密结果"></textarea>
+            </article>
+            <article>
+                <h1>解密</h1>
+                <textarea id="decrypt" placeholder="输入待解密文字，文字穿插其他字符不影响解密结果"></textarea>
+                <button onclick="decrypt_result.value=sbToString(decrypt.value)">解密</button>
+                <button onclick="copy(decrypt_result.value);this.focus()">复制</button>
+                <textarea id="decrypt_result" placeholder="解密结果"></textarea>
+            </article>
+        </div>
+    </main>
+</body>
+</html>
